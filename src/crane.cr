@@ -1,4 +1,4 @@
-require "./*"
+require "./**"
 
 module Crane
   VERSION     = "0.1.0"

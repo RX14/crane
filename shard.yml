@@ -7,6 +7,11 @@ authors:
 description: |
   Manage and install crystal versions and toolchains with ease
 
+dependencies:
+  cli:
+    github: mosop/cli
+    version: ~> 0.6.7
+
 crystal: 0.21.1
 
 license: MIT
