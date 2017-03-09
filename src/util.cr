@@ -30,4 +30,17 @@ module Crane::Util
 
     dirs
   end
+
+  def self.which(name, path = ENV["PATH"]?)
+    return unless path
+
+    path.split(File::PATH_DELIMITER).each do |path|
+      executable = File.join(path, name)
+      return executable if File.exists?(executable)
+    end
+  end
+
+  def self.run(command, *args, workdir : String? = nil)
+    Process.run(which(command), args, chdir: workdir)
+  end
 end
