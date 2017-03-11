@@ -4,7 +4,7 @@ module Crane::Util
     data : String,
     cache : String
 
-  def self.get_application_dirs(name = nil)
+  def self.application_dirs(name = nil)
     # NOTE: See Haskell for windows implementations https://hackage.haskell.org/package/directory-1.3.1.0/docs/System-Directory.html#t:XdgDirectory
     config = ENV["XDG_CONFIG_HOME"]?
     config = File.expand_path("~/.config") unless config && config.starts_with?(File::SEPARATOR)
@@ -19,16 +19,6 @@ module Crane::Util
     cache = File.join(cache, name) if name
 
     ApplicationDirectory.new(config, data, cache)
-  end
-
-  def self.ensure_application_dirs(name)
-    dirs = get_application_dirs(name)
-
-    Dir.mkdir(dirs.config)
-    Dir.mkdir(dirs.data)
-    Dir.mkdir(dirs.cache)
-
-    dirs
   end
 
   def self.which(name, path = ENV["PATH"]?)
