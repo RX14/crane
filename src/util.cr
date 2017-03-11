@@ -45,4 +45,12 @@ module Crane::Util
 
     stdout.chomp
   end
+
+  macro assert(cond)
+    %res = {{cond}}
+
+    unless %res == true
+      raise("ASSERTION FAILED: " + {{cond.stringify}})
+    end
+  end
 end
