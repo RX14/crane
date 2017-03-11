@@ -24,7 +24,7 @@ module Crane::Util
   def self.which(name, path = ENV["PATH"]?)
     return unless path
 
-    path.split(File::PATH_DELIMITER).each do |path|
+    path.split(Process::PATH_DELIMITER).each do |path|
       executable = File.join(path, name)
       return executable if File.exists?(executable)
     end
