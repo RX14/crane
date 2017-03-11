@@ -49,6 +49,7 @@ class Crane::Command < Cli::Supercommand
 
   class Options
     help
+    version
   end
 
   class Help
