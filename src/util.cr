@@ -32,8 +32,14 @@ module Crane::Util
   end
 
   def self.run(command, *args, workdir : String? = nil, stderr = false)
+    status = nil
     stdout = String.build do |str|
-      Process.run(which(command), args, chdir: workdir, output: str, error: stderr)
+      status = Process.run(which(command), args, chdir: workdir, output: str, error: stderr)
+    end
+    raise "BUG: no status" unless status
+
+    unless status.success?
+      raise "#{command} #{args} failed with exit code #{status.exit_code}"
     end
 
     stdout.chomp
