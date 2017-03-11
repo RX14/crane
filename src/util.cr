@@ -31,7 +31,11 @@ module Crane::Util
     raise "Executable `#{name}` not found in PATH"
   end
 
-  def self.run(command, *args, workdir : String? = nil)
-    Process.run(which(command), args, chdir: workdir)
+  def self.run(command, *args, workdir : String? = nil, stderr = false)
+    stdout = String.build do |str|
+      Process.run(which(command), args, chdir: workdir, output: str, error: stderr)
+    end
+
+    stdout.chomp
   end
 end
