@@ -9,6 +9,21 @@ class Crane::Command < Cli::Supercommand
     end
   end
 
+  class Rimraf < Cli::Command
+    class Options
+      bool "--really"
+    end
+
+    def run
+      exit! "Are you sure you want to wipe all data? Use --really" unless options.really?
+
+      dirs = Util.application_dirs("crane")
+      FileUtils.rm_rf dirs.config
+      FileUtils.rm_rf dirs.data
+      FileUtils.rm_rf dirs.cache
+    end
+  end
+
   class Completion < Cli::Command
     class Options
       string "--shell", any_of: %w(bash zsh), default: "bash"
