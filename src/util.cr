@@ -23,6 +23,7 @@ module Crane::Util
 
   def self.which(name, path = ENV["PATH"]?)
     raise "PATH not set" unless path
+    return name if name.starts_with?(File::SEPARATOR)
 
     path.split(Process::PATH_DELIMITER).each do |path|
       executable = File.join(path, name)
