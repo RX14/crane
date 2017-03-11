@@ -22,12 +22,13 @@ module Crane::Util
   end
 
   def self.which(name, path = ENV["PATH"]?)
-    return unless path
+    raise "PATH not set" unless path
 
     path.split(Process::PATH_DELIMITER).each do |path|
       executable = File.join(path, name)
       return executable if File.exists?(executable)
     end
+    raise "Executable `#{name}` not found in PATH"
   end
 
   def self.run(command, *args, workdir : String? = nil)
