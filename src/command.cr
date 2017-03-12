@@ -5,7 +5,13 @@ class Crane::Command < Cli::Supercommand
   command_name "crane"
 
   class Install < Cli::Command
+    class Options
+      arg "version", required: true
+    end
+
     def run
+      version_manager = VersionManager.new(VersionManager.default_base_dir)
+      Tasks.install_crystal_from_source(version_manager, options.version)
     end
   end
 
