@@ -7,6 +7,12 @@ authors:
 description: |
   Manage and install crystal versions and toolchains with ease
 
+targets:
+  crane:
+    main: src/entrypoint.cr
+  crystal-wrapper:
+    main: src/wrappers/crystal.cr
+
 dependencies:
   cli:
     github: mosop/cli
