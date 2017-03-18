@@ -7,11 +7,12 @@ class Crane::Command < Cli::Supercommand
   class Install < Cli::Command
     class Options
       arg "version", required: true
+      bool "--release", default: true, not: "--no-release"
     end
 
     def run
       version_manager = VersionManager.new(VersionManager.default_base_dir)
-      Tasks.install_crystal_from_source(version_manager, options.version)
+      Tasks.install_crystal_from_source(version_manager, options.version, release: options.release?)
     end
   end
 

@@ -45,7 +45,7 @@ module Crane::Tasks
   end
 
   # Installs a new crystal version to *version_manager* at *revision*.
-  def self.install_crystal_from_source(version_manager, revision) : CrystalVersion
+  def self.install_crystal_from_source(version_manager, revision, *, release) : CrystalVersion
     temp_crystal_checkout(revision) do |repository|
       # Doubly ensure cleanliness
       Util.run("git", "clean", "-fdx", workdir: repository)
@@ -66,12 +66,15 @@ module Crane::Tasks
       version = version_manager.new_version(crystal_version, InstallMethod::Git)
 
       begin
-        STDERR.puts "  #{"Compiling".colorize.blue} crystal..."
-        Util.run("make", "crystal", "release=true", workdir: repository, stderr: true, env: {
+        compile_env = {
           "CRYSTAL_CONFIG_VERSION" => crystal_version,
           "CRYSTAL_CONFIG_PATH"    => "lib:#{version.stdlib_path}",
           "CRYSTAL_CACHE_DIR"      => ".crystal",
-        })
+        }
+        compile_env["release"] = "true" if release
+
+        STDERR.puts "  #{"Compiling".colorize.blue} crystal in #{release ? "release" : "debug"} mode..."
+        Util.run("make", "crystal", workdir: repository, stderr: true, env: compile_env)
         FileUtils.cp(File.join(repository, ".build", "crystal"), version.crystal_path)
 
         # Copy stdlib
