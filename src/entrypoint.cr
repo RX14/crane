@@ -1,3 +1,3 @@
-require "./src/crane"
+require "./crane"
 
 Crane::Command.run ARGV
