@@ -62,8 +62,14 @@ module Crane::Tasks
       target_rev = Util.run("git", "rev-list", "-1", revision, workdir: repository)
       Util.assert target_rev.starts_with? crystal_short_rev
 
+      begin
+        version = version_manager.new_version(crystal_version, InstallMethod::Git)
+      rescue ex : VersionManager::VersionAlreadyRegisteredException
+        STDERR.puts "Crystal version already installed!".colorize.yellow
+        return ex.conflicting_version
+      end
+
       STDERR.puts "#{"Installing".colorize.green} crystal #{crystal_version} [#{crystal_short_rev}]"
-      version = version_manager.new_version(crystal_version, InstallMethod::Git)
 
       begin
         compile_env = {

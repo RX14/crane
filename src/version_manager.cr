@@ -68,6 +68,9 @@ module Crane
     def new_version(version_name, install_method)
       version_base_dir = File.join(base_dir, "#{version_name}-#{install_method.to_s.downcase}")
 
+      conflicting_version = versions.find { |v| v.base_dir == version_base_dir }
+      raise VersionAlreadyRegisteredException.new(conflicting_version) if conflicting_version
+
       version = CrystalVersion.new(version_base_dir, version_name, install_method)
       version.save
       versions << version
@@ -92,6 +95,14 @@ module Crane
         rescue ex
           STDERR.puts "#{"Failed".colorize.red} to load version from #{dir}\n  #{ex.message}"
         end
+      end
+    end
+
+    class VersionAlreadyRegisteredException < Exception
+      getter conflicting_version : CrystalVersion
+
+      def initialize(@conflicting_version)
+        super("Crystal version already registered")
       end
     end
   end
