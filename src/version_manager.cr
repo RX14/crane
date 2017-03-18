@@ -85,6 +85,7 @@ module Crane
 
       Dir.foreach(base_dir) do |dir|
         next if {".", ".."}.includes? dir
+        dir = File.join(base_dir, dir)
 
         begin
           versions << CrystalVersion.load(dir)
