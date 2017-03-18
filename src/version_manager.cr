@@ -88,8 +88,8 @@ module Crane
 
         begin
           versions << CrystalVersion.load(dir)
-        rescue
-          STDERR.puts "#{"Failed".colorize.red} to load version from #{dir}"
+        rescue ex
+          STDERR.puts "#{"Failed".colorize.red} to load version from #{dir}\n  #{ex.message}"
         end
       end
     end
