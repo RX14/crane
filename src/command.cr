@@ -16,6 +16,13 @@ class Crane::Command < Cli::Supercommand
     end
   end
 
+  class Versions < Cli::Command
+    def run
+      version_manager = VersionManager.new(VersionManager.default_base_dir)
+      version_manager.versions.each { |v| puts v.version }
+    end
+  end
+
   class Rimraf < Cli::Command
     class Options
       bool "--really"
