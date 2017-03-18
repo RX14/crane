@@ -54,11 +54,7 @@ class Crane::Command < Cli::Supercommand
   end
 
   before_initialize do
-    dirs = Util.application_dirs("crane")
-
-    Dir.mkdir(dirs.config) unless Dir.exists? dirs.config
-    Dir.mkdir(dirs.data) unless Dir.exists? dirs.data
-    Dir.mkdir(dirs.cache) unless Dir.exists? dirs.cache
+    Util.ensure_application_dirs
   end
 
   class Options

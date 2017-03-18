@@ -21,6 +21,14 @@ module Crane::Util
     ApplicationDirectory.new(config, data, cache)
   end
 
+  def self.ensure_application_dirs
+    dirs = Util.application_dirs("crane")
+
+    Dir.mkdir(dirs.config) unless Dir.exists? dirs.config
+    Dir.mkdir(dirs.data) unless Dir.exists? dirs.data
+    Dir.mkdir(dirs.cache) unless Dir.exists? dirs.cache
+  end
+
   def self.which(name, path = ENV["PATH"]?)
     raise "PATH not set" unless path
     return name if name.starts_with?(File::SEPARATOR)
